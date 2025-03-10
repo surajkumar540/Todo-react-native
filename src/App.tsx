@@ -1,25 +1,36 @@
-import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import FlatCard from './components/Cards/FlatCard';
 
 const App = () => {
   return (
-    <SafeAreaView>
-      <View style={styles.headingText}>
-        <Text>Flat Card</Text>
-        <FlatCard />
+    <View style={styles.container}>
+      {/* <Text>App</Text> */}
+      <View style={styles.taskWrapper}>
+        <Text style={styles.sectionTitle}>Today's tasks</Text>
+        <View style={styles.items}>
+          {/* This is where the tasks will go */}
+        </View>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
 export default App;
 
 const styles = StyleSheet.create({
-  headingText: {
-    fontSize: 20,
+  container: {
+    flex: 1,
+    backgroundColor: '#E8EAED',
+  },
+  taskWrapper: {
+    paddingTop: 80,
+    paddingHorizontal: 20,
+  },
+  sectionTitle: {
+    fontSize: 24,
     fontWeight: 'bold',
-    textAlign: 'center',
-    margin: 10,
+  },
+  items: {
+    marginTop: 30,
   },
 });
