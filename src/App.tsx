@@ -1,7 +1,6 @@
 import {
   Text,
   View,
-  Image,
   ScrollView,
   KeyboardAvoidingView,
   Platform,
@@ -14,6 +13,8 @@ import React, {useState, useRef, useEffect} from 'react';
 import Task from './components/Task';
 import {styles} from './components/styles';
 import InputSection from './components/InputSection';
+import Tabs from './components/Tabs';
+import EmptyTask from './components/EmptyTask';
 
 type TaskType = {
   id: number;
@@ -39,7 +40,7 @@ const App = () => {
         useNativeDriver: true,
       }).start();
     }, 300);
-  }, []);
+  }, [fadeAnim]);
 
   const handleChange = (input: string) => {
     setQuery(input);
@@ -132,6 +133,7 @@ const App = () => {
         backgroundColor={styles.container.backgroundColor}
       />
       <Animated.View style={[styles.taskWrapper, {opacity: fadeAnim}]}>
+        {/* Heading */}
         <View style={styles.header}>
           <Text style={styles.sectionTitle}>My Tasks</Text>
           {tasks.length > 0 && (
@@ -141,52 +143,13 @@ const App = () => {
           )}
         </View>
 
-        {tasks.length > 0 && (
-          <View style={styles.filterContainer}>
-            <TouchableOpacity
-              onPress={() => setFilter('all')}
-              style={[
-                styles.filterButton,
-                filter === 'all' && styles.filterButtonActive,
-              ]}>
-              <Text
-                style={[
-                  styles.filterText,
-                  filter === 'all' && styles.filterTextActive,
-                ]}>
-                All ({tasks.length})
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => setFilter('active')}
-              style={[
-                styles.filterButton,
-                filter === 'active' && styles.filterButtonActive,
-              ]}>
-              <Text
-                style={[
-                  styles.filterText,
-                  filter === 'active' && styles.filterTextActive,
-                ]}>
-                Active ({activeCount})
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => setFilter('completed')}
-              style={[
-                styles.filterButton,
-                filter === 'completed' && styles.filterButtonActive,
-              ]}>
-              <Text
-                style={[
-                  styles.filterText,
-                  filter === 'completed' && styles.filterTextActive,
-                ]}>
-                Completed ({completedCount})
-              </Text>
-            </TouchableOpacity>
-          </View>
-        )}
+        <Tabs
+          tasks={tasks}
+          filter={filter}
+          setFilter={setFilter}
+          activeCount={activeCount}
+          completedCount={completedCount}
+        />
 
         <ScrollView
           ref={scrollViewRef}
@@ -194,18 +157,7 @@ const App = () => {
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}>
           {tasks.length === 0 ? (
-            <View style={styles.noTaskContainer}>
-              <Image
-                source={{
-                  uri: 'https://static.vecteezy.com/system/resources/previews/016/349/593/non_2x/empty-folder-no-result-data-not-found-concept-illustration-flat-design-eps10-simple-and-modern-graphic-element-for-landing-page-ui-infographic-etc-vector.jpg',
-                }}
-                style={styles.noTaskImage}
-              />
-              <Text style={styles.noTaskText}>No tasks yet</Text>
-              <Text style={styles.noTaskSubText}>
-                Add a task to get started
-              </Text>
-            </View>
+            <EmptyTask />
           ) : filteredTasks.length === 0 ? (
             <View style={styles.noTaskContainer}>
               <Text style={styles.noTaskText}>No {filter} tasks found</Text>

@@ -56,7 +56,7 @@ const InputSection = ({
       keyboardDidHideListener.remove();
       keyboardDidShowListener.remove();
     };
-  }, []);
+  }, [animatedButtonWidth]);
 
   const onSubmit = () => {
     handleSubmit();
